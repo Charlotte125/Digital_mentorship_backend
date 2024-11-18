@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'mentorship',
     'rest_framework',
-    'corsheaders'
+    'corsheaders',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -54,6 +55,18 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'core.urls'
+
+# settings.py
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1:8000', 6379)],
+        },
+    },
+}
+
+
 
 TEMPLATES = [
     {
@@ -70,6 +83,20 @@ TEMPLATES = [
         },
     },
 ]
+# Use ASGI instead of WSGI
+
+ASGI_APPLICATION = 'DIGITAL_MENTORSHIP_BACKEND.asgi.application'
+
+# Channel layers configuration for WebSocket communication
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],  # Replace with your Redis host and port
+        },
+    },
+}
+
 
 WSGI_APPLICATION = 'core.wsgi.application'
 

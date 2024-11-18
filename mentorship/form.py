@@ -41,23 +41,23 @@ widgets = {
 
         
 
-# class TherapistForm(ModelForm):
-#     class Meta:
-#         model= Therapist
-#         fields= {' first_name ','last_name ','level_education ', ' email_address','password',' document'}
-#         widgets = {
-#             'email_address': TextInput (attrs={'placeholder':'email address '}),
-#             'password': NumberInput (attrs={'placeholder':'password'}),
-#             ' document': TextInput (attrs={'placeholder':'document'}),
-#              ' level_education ': TextInput (attrs={'placeholder':'level of education'}),
-#                 ' last_name  ': TextInput (attrs={'placeholder':'first name'}),
-#                    'first_name ': TextInput (attrs={'placeholder':'last name'}),
+class TherapistForm(ModelForm):
+    class Meta:
+        model= Therapist
+        fields= {' first_name ','last_name ','level_education ', ' email_address','password',' document'}
+        widgets = {
+            'email_address': TextInput (attrs={'placeholder':'email address '}),
+            'password': NumberInput (attrs={'placeholder':'password'}),
+            ' document': TextInput (attrs={'placeholder':'document'}),
+             ' level_education ': TextInput (attrs={'placeholder':'level of education'}),
+                ' last_name  ': TextInput (attrs={'placeholder':'first name'}),
+                   'first_name ': TextInput (attrs={'placeholder':'last name'}),
 
 
 
 
             
-#         }
+        }
 
 
 

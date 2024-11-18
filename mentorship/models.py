@@ -10,13 +10,11 @@ class Registration(models.Model):
     department = models.CharField(max_length=255)
     password = models.CharField(max_length=128)
 
-    def save(self, *args, **kwargs):
-        self.password = make_password(self.password)  # Hash password
-        super(Registration, self).save(*args, **kwargs)
+    def set_password(self, raw_password):
+        self.password = make_password(raw_password)  
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
-
 
 class Therapist(models.Model):
     first_name = models.CharField(max_length=255, blank=False, null=False)
@@ -27,9 +25,8 @@ class Therapist(models.Model):
     document = models.FileField(upload_to='documents/', blank=False, null=False)  
 
     def save(self, *args, **kwargs):
-       
         self.password = make_password(self.password)
-        super(Registration, self).save(*args, **kwargs)
+        super(Therapist, self).save(*args, **kwargs)
 
 
 
@@ -40,7 +37,6 @@ class ResetPassword(models.Model):
         New_password = models.CharField(max_length=128,blank=False,null=False)
         confirm_password = models.CharField(max_length=128,blank=False,null=False)
     
-
 
 
 
