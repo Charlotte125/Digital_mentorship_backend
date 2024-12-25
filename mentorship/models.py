@@ -1,6 +1,10 @@
 from django.db import models
 from django.contrib.auth.hashers import make_password
 from django.db import models
+from django.contrib.auth.models import User
+import uuid
+from django.utils.timezone import now
+from datetime import timedelta
 
 class Registration(models.Model):
     student_id = models.CharField(max_length=1000, primary_key=True)
@@ -33,14 +37,14 @@ class Therapist(models.Model):
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
     
-class ResetPassword(models.Model):
-        New_password = models.CharField(max_length=128,blank=False,null=False)
-        confirm_password = models.CharField(max_length=128,blank=False,null=False)
-    
+class PasswordResetToken(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    token = models.UUIDField(default=uuid.uuid4, editable=False)
+    created_at = models.DateTimeField(auto_now_add=True)
 
-
-
-
+    def is_expired(self):
+        """Checks if the token is expired (24-hour validity)."""
+        return now() > self.created_at + timedelta(hours=24)
 
 
 

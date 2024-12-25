@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+import env
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -42,6 +46,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'channels',
 ]
+APPEND_SLASH = False
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -65,6 +71,11 @@ CHANNEL_LAYERS = {
         },
     },
 }
+EMAIL_BACKEND = 'postmark.django_backend.EmailBackend'
+POSTMARK_API_TOKEN = 'a4d90aab-6672-4a43-bdd4-e9a03b35ac60'  # Replace with your actual Postmark API token
+DEFAULT_FROM_EMAIL = 'pierre@nguweneza.tech'  # Use an email address verified in Postmark
+
+
 
 
 
