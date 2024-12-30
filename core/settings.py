@@ -72,8 +72,16 @@ CHANNEL_LAYERS = {
     },
 }
 EMAIL_BACKEND = 'postmark.django_backend.EmailBackend'
-POSTMARK_API_TOKEN = 'a4d90aab-6672-4a43-bdd4-e9a03b35ac60'  # Replace with your actual Postmark API token
-DEFAULT_FROM_EMAIL = 'pierre@nguweneza.tech'  # Use an email address verified in Postmark
+POSTMARK_API_TOKEN = 'a4d90aab-6672-4a43-bdd4-e9a03b35ac60' 
+DEFAULT_FROM_EMAIL = 'pierre@nguweneza.tech'  
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'charlotteliza22@gmail.com'  # Replace with your SMTP server
+EMAIL_PORT = 587  # Typically 587 for TLS, 465 for SSL
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'charlotteliza22@gmail.com' 
+DEFAULT_FROM_EMAIL = 'pierre@nguweneza.tech'
 
 
 

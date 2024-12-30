@@ -67,48 +67,31 @@ class RegistrationViewSet(viewsets.ModelViewSet):
 
 
 class PasswordResetRequestAPIView(APIView):
- def post(self, request):
+    def post(self, request):
         serializer = PasswordResetSerializer(data=request.data)
-        
         if serializer.is_valid():
             email_address = serializer.validated_data.get('email_address')
-            print(f"Received email address: {email_address}")  # Debugging line
-            
-            if not email_address:
-                return Response({'message': 'Email is required.'}, status=status.HTTP_400_BAD_REQUEST)
 
             try:
                 user = User.objects.get(email__iexact=email_address)
             except User.DoesNotExist:
-                 return Response({'message': 'No user with this email exists.'}, status=status.HTTP_404_NOT_FOUND)
+                return Response({'message': 'No user with this email exists.'}, status=status.HTTP_404_NOT_FOUND)
 
-            # Generate or retrieve a password reset token
-            token, created = PasswordResetToken.objects.get_or_create(user=user)
-            if not created:
-                token.token = uuid.uuid4()
-                token.created_at = datetime.now()
-                token.save()
-
-            # Construct the correct reset link
+            token, _ = PasswordResetToken.objects.get_or_create(user=user)
             reset_link = f"http://127.0.0.1:8000/password-reset/{token.token}/"
 
-            # Send email notification
-            subject = "Password Reset Request"
-            message = f"Click the link below to reset your password:\n\n{reset_link}"
             send_mail(
-            subject='Password Reset',
-            message='Your reset link is...',
-            from_email='pierre@nguweneza.tech"',  # Ensure this is valid
-            recipient_list='charlotteliz22@gmail.com',
-            fail_silently=False,
-          )
-
+                subject="Password Reset",
+                message=f"Click the link below to reset your password:\n\n{reset_link}",
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[email_address],
+                fail_silently=False,
+            )
 
             return Response({'message': 'Password reset email sent.'}, status=status.HTTP_200_OK)
 
-        # Debugging print statement for errors
-        print(serializer.errors)  # Debugging line
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 class PasswordResetAPIView(APIView):

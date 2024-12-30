@@ -29,17 +29,12 @@ class PasswordResetSerializer(serializers.Serializer):
     new_password = serializers.CharField(write_only=True, min_length=8)
     confirm_password = serializers.CharField(write_only=True)
 
-def validate_email(self, value):
-    try:
-        User.objects.get(email__iexact=value) 
+    def validate_email(self, value):
+        if not User.objects.filter(email__iexact=value).exists():
+            raise serializers.ValidationError("No user with this email exists.")
         return value
-    except User.DoesNotExist:
-        raise serializers.ValidationError("No user with this email exists.")
 
     def validate(self, data):
-        """Ensure the new_password and confirm_password match."""
-        if data["new_password"] != data["confirm_password"]:
+        if data['new_password'] != data['confirm_password']:
             raise serializers.ValidationError({"confirm_password": "Passwords do not match."})
         return data
-
-
