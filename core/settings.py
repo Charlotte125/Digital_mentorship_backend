@@ -85,17 +85,17 @@ TEMPLATES = [
 ]
 # Use ASGI instead of WSGI
 
-ASGI_APPLICATION = 'DIGITAL_MENTORSHIP_BACKEND.asgi.application'
+ASGI_APPLICATION = 'core.asgi.application'
 
 # Channel layers configuration for WebSocket communication
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],  # Replace with your Redis host and port
-        },
-    },
-}
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#         'CONFIG': {
+#             "hosts": [('127.0.0.1', 6379)],  # Replace with your Redis host and port
+#         },
+#     },
+# }
 
 
 WSGI_APPLICATION = 'core.wsgi.application'
