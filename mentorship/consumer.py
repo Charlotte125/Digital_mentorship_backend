@@ -10,6 +10,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
         # Create a group name using the room_id to distinguish between rooms
         self.room_group_name = f"chat_{self.room_id}"
 
+        print(self.room_group_name)
+
         # Join the room group
         await self.channel_layer.group_add(
             self.room_group_name,
