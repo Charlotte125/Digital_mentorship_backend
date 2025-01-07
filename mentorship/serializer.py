@@ -3,6 +3,7 @@ from .models import Registration, Therapist, PasswordResetToken
 from django.contrib.auth.models import User
 
 
+
 class RegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Registration
@@ -25,7 +26,7 @@ class TherapistRegistartionSerializer(serializers.ModelSerializer):
         }
 
 class PasswordResetSerializer(serializers.Serializer):
-    email_address = serializers.EmailField(required=True)
+    email_address = serializers.EmailField()
     new_password = serializers.CharField(write_only=True, min_length=8)
     confirm_password = serializers.CharField(write_only=True)
 

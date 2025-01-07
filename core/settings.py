@@ -20,8 +20,7 @@ import env
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
+
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-0e!exalus^a#c%+ib4r=pcvcyxm2mn9m+d39f4aux5=6*dgfxj'
@@ -71,17 +70,19 @@ CHANNEL_LAYERS = {
         },
     },
 }
-EMAIL_BACKEND = 'postmark.django_backend.EmailBackend'
-POSTMARK_API_TOKEN = 'a4d90aab-6672-4a43-bdd4-e9a03b35ac60' 
-DEFAULT_FROM_EMAIL = 'pierre@nguweneza.tech'  
-
-
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'charlotteliza22@gmail.com'  # Replace with your SMTP server
-EMAIL_PORT = 587  # Typically 587 for TLS, 465 for SSL
+DEBUG = True
+EMAIL_HOST ='smtp.gmail.com'
+EMAIL_HOST_USER = 'charlotteiliza48@gmail.com'
+EMAIL_HOST_PASSWORD= 'yrus jpzl tvqk dtbq'
+EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'charlotteliza22@gmail.com' 
-DEFAULT_FROM_EMAIL = 'pierre@nguweneza.tech'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = '/tmp/email_messages'
+
+
+FRONTEND_URL = 'http://localhost:3000'
 
 
 
@@ -90,7 +91,9 @@ DEFAULT_FROM_EMAIL = 'pierre@nguweneza.tech'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR / 'core' / 'templates',  # Update this line to match your folder structure
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -102,16 +105,15 @@ TEMPLATES = [
         },
     },
 ]
-# Use ASGI instead of WSGI
+
 
 ASGI_APPLICATION = 'DIGITAL_MENTORSHIP_BACKEND.asgi.application'
 
-# Channel layers configuration for WebSocket communication
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],  # Replace with your Redis host and port
+            "hosts": [('127.0.0.1', 6379)], 
         },
     },
 }
@@ -120,8 +122,7 @@ CHANNEL_LAYERS = {
 WSGI_APPLICATION = 'core.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+
 
 DATABASES = {
     'default': {
@@ -131,8 +132,6 @@ DATABASES = {
 }
 
 
-# Password validation
-# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -154,8 +153,7 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
+
 
 LANGUAGE_CODE = 'en-us'
 
@@ -166,12 +164,9 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

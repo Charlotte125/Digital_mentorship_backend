@@ -15,12 +15,85 @@ from rest_framework.exceptions import ValidationError
 from .serializer import PasswordResetSerializer  
 import uuid
 from datetime import datetime
+import smtplib
+from django.conf import settings
+import logging
+from django.contrib.auth.models import User
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.core .mail import send_mail
+from django.conf import settings
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.conf import settings
+from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.forms import PasswordChangeForm
+from .models import PasswordResetToken
 
 
 
+def send_reset_email(request):
+    """Handle password reset request, generate token and send email."""
+    if request.method == 'POST':
+        receiver_email = request.POST.get('email')
+
+        try:
+            
+            user = Registration.objects.get(email_address=receiver_email)
+
+         
+            token = str(uuid.uuid4())
+            PasswordResetToken.objects.create(email_address=receiver_email, token=token)
+
+            reset_link = f'{settings.FRONTEND_URL}/reset-password/{token}/'
+
+           
+            context = {'reset_link': reset_link}
+            message = render_to_string('index.html', context)
+
+            send_mail(
+                'Password Reset Request',
+                '',  
+                settings.EMAIL_HOST_USER,
+                [receiver_email],
+                fail_silently=False,
+                html_message=message,
+            )
+
+            return JsonResponse({'success': True, 'message': 'Password reset email sent successfully!'})
+        
+        except Registration.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'User not found.'})
+
+    return HttpResponse({'success': False, 'message': 'Invalid request method. POST expected.'})
 
 
-class RegistrationAPIView(APIView):  # Renamed here
+def reset_password(request, token):
+    """Handle password reset using the token."""
+    if request.method == 'POST':
+        try:
+            n
+            reset_token = PasswordResetToken.objects.get(token=token)
+            user = Registration.objects.get(email_address=reset_token.email_address)
+
+         
+            new_password = request.POST.get('new_password')
+
+    
+            user.set_password(new_password)
+            user.save()
+
+            reset_token.delete()
+
+            return JsonResponse({'success': True, 'message': 'Password reset successful.'})
+        
+        except (PasswordResetToken.DoesNotExist, Registration.DoesNotExist):
+            return JsonResponse({'success': False, 'message': 'Invalid token or user not found.'})
+
+    return JsonResponse({'success': False, 'message': 'Invalid request method. POST expected.'})
+
+class RegistrationAPIView(APIView):  
     def post(self, request):
         serializer = RegistrationSerializer(data=request.data)
         if serializer.is_valid():
@@ -40,9 +113,7 @@ class RegistrationDetailAPIView(APIView):
         registration = Registration.objects.get(student_id=student_id)
 
         if not check_password(password, registration.password):
-            return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)  # Use 401 for unauthorized access
-
-        # ... (rest of your code to serialize and return registration data)
+            return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)  
     except Registration.DoesNotExist:
         return Response({'error': 'Student not found'}, status=status.HTTP_404_NOT_FOUND)
         
@@ -60,26 +131,34 @@ class TherapistregistrationAPIView(APIView):
 
 
 class RegistrationViewSet(viewsets.ModelViewSet):
-    queryset = Registration.objects.all()  # Fetch all Registration objects from the database
+    queryset = Registration.objects.all()  
     serializer_class = RegistrationSerializer 
+
 
 
 
 
 class PasswordResetRequestAPIView(APIView):
     def post(self, request):
+        logger.info("Password reset request received.")
         serializer = PasswordResetSerializer(data=request.data)
         if serializer.is_valid():
             email_address = serializer.validated_data.get('email_address')
+            logger.info(f"Validated email: {email_address}")
 
-            try:
-                user = User.objects.get(email__iexact=email_address)
-            except User.DoesNotExist:
-                return Response({'message': 'No user with this email exists.'}, status=status.HTTP_404_NOT_FOUND)
-
+            user = User.objects.filter(email__iexact=email_address).first()
+            if not user:
+            
+                return Response(
+                    {'message': 'No user with this email exists.'},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+        
             token, _ = PasswordResetToken.objects.get_or_create(user=user)
             reset_link = f"http://127.0.0.1:8000/password-reset/{token.token}/"
+            logger.info(f"Generated reset link: {reset_link}")
 
+            
             send_mail(
                 subject="Password Reset",
                 message=f"Click the link below to reset your password:\n\n{reset_link}",
@@ -88,9 +167,43 @@ class PasswordResetRequestAPIView(APIView):
                 fail_silently=False,
             )
 
-            return Response({'message': 'Password reset email sent.'}, status=status.HTTP_200_OK)
+            return Response(
+                {'message': 'Password reset email sent.'},
+                status=status.HTTP_200_OK
+            )
 
+        logger.error("Serializer validation failed.")
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+def email_exists(self, email):
+  """Check if the given email exists in the database."""
+  return (
+      User.objects.filter(email__iexact=email).exists() or
+    #  user = User.objects.filter(email__iexact='raissa@gmail.com').first() print(user) or
+    #  user = User.objects.filter(email__iexact='raissa@gmail.com').first()
+    #  print(user) or
+     Registration.objects.filter(email_address__iexact=email).exists()
+  )
+
+
+
+def send_test_email():
+  try:
+    server = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
+    server.starttls()
+    server.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+    message = "This is a test email from your Django application."
+    server.sendmail(settings.DEFAULT_FROM_EMAIL, ["pierre@nguweneza.tech"], message)
+    server.quit()
+    print("Email sent successfully!")
+  except Exception as e:
+    print(f"Error sending email: {e}")
+
+if __name__ == "__main__":
+  send_test_email()
+
+
+
 
 
 
@@ -117,7 +230,12 @@ class PasswordResetAPIView(APIView):
         user.set_password(new_password)
         user.save()
 
-        # Delete the token after use
+    
         reset_token.delete()
 
         return Response({'message': 'Password has been reset.'}, status=status.HTTP_200_OK)
+
+
+
+
+
