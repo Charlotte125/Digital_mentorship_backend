@@ -62,29 +62,14 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'core.urls'
 
 # settings.py
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [('127.0.0.1:8000', 6379)],
-        },
-    },
-}
-DEBUG = True
-EMAIL_HOST ='smtp.gmail.com'
-EMAIL_HOST_USER = 'charlotteiliza48@gmail.com'
-EMAIL_HOST_PASSWORD= 'yrus jpzl tvqk dtbq'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-EMAIL_FILE_PATH = '/tmp/email_messages'
-
-
-FRONTEND_URL = 'http://localhost:3000'
-
-
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#         'CONFIG': {
+#             "hosts": [('127.0.0.1:8000', 6379)],
+#         },
+#     },
+# }
 
 
 
@@ -107,16 +92,24 @@ TEMPLATES = [
 ]
 
 
-ASGI_APPLICATION = 'DIGITAL_MENTORSHIP_BACKEND.asgi.application'
+ASGI_APPLICATION = 'core.asgi.application'
+
+# Channel layers configuration for WebSocket communication
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#         'CONFIG': {
+#             "hosts": [('127.0.0.1', 6379)],  # Replace with your Redis host and port
+#         },
+#     },
+# }
 
 CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)], 
-        },
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
     },
 }
+
 
 
 WSGI_APPLICATION = 'core.wsgi.application'
