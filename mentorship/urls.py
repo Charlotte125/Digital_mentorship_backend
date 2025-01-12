@@ -18,7 +18,7 @@ urlpatterns = [
     path('api/register/therapist/', TherapistregistrationAPIView.as_view(), name='api_register_therapist'),  
     path('api/registrations/<int:student_id>/', RegistrationDetailAPIView.as_view(), name='registration-detail'),
     path('password-reset/', PasswordResetRequestAPIView.as_view(), name='password-reset'),
-    # path('password-reset/<str:token>/', PasswordResetAPIView.as_view(), name='password-reset'),
+   
 
    
 ]
