@@ -30,6 +30,8 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.forms import PasswordChangeForm
 from .models import PasswordResetToken
+from .models import UniversityStaff
+from .serializer import UniversityStaffSerializer
 
 
 
@@ -118,9 +120,6 @@ class RegistrationDetailAPIView(APIView):
         return Response({'error': 'Student not found'}, status=status.HTTP_404_NOT_FOUND)
         
 
-
-
-
 class TherapistregistrationAPIView(APIView):  
     def post(self, request):
         serializer = TherapistRegistartionSerializer(data=request.data)
@@ -133,9 +132,6 @@ class TherapistregistrationAPIView(APIView):
 class RegistrationViewSet(viewsets.ModelViewSet):
     queryset = Registration.objects.all()  
     serializer_class = RegistrationSerializer 
-
-
-
 
 
 class PasswordResetRequestAPIView(APIView):
@@ -185,8 +181,6 @@ def email_exists(self, email):
      Registration.objects.filter(email_address__iexact=email).exists()
   )
 
-
-
 def send_test_email():
   try:
     server = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
@@ -201,8 +195,6 @@ def send_test_email():
 
 if __name__ == "__main__":
   send_test_email()
-
-
 
 
 
@@ -234,6 +226,19 @@ class PasswordResetAPIView(APIView):
         reset_token.delete()
 
         return Response({'message': 'Password has been reset.'}, status=status.HTTP_200_OK)
+
+
+
+class UniversityStaffCreateAPIView(APIView):
+    def post(self, request):
+        serializer = UniversityStaffSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({
+                "message": "University staff registered successfully.",
+                "data": serializer.data
+            }, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)       
 
 
 

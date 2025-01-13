@@ -4,15 +4,16 @@ from .models import ResetPassword
 from .models import Therapist
 from django.forms import TextInput
 from django import forms
+from .models import UniversityStaff
 
 
 
 class RegistrationForm(forms.ModelForm):
     class Meta:
         model = Registration
-        fields = ['student_id', 'first_name', 'last_name', 'email_address', 'department', 'password']  # Use a list
+        fields = ['student_id', 'first_name', 'last_name', 'email_address', 'department', 'password']  
         widgets = {
-            'password': forms.PasswordInput(),  # To render password as a password field
+            'password': forms.PasswordInput(), 
         }
 
 widgets = {
@@ -58,6 +59,27 @@ class TherapistForm(ModelForm):
 
             
         }
+
+
+        class UniversityStaffForm(forms.ModelForm):
+    confirm_password = forms.CharField(widget=forms.PasswordInput, label="Confirm Password")
+
+    class Meta:
+        model = UniversityStaff
+        fields = ['staff_id', 'first_name', 'last_name', 'email_address', 'department', 'role', 'password']
+        widgets = {
+            'password': forms.PasswordInput(),
+        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get("password")
+        confirm_password = cleaned_data.get("confirm_password")
+
+        if password != confirm_password:
+            raise forms.ValidationError("Passwords do not match")
+
+        return cleaned_data
 
 
 

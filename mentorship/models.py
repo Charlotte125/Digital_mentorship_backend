@@ -21,6 +21,24 @@ class Registration(models.Model):
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
+
+
+class UniversityStaff(models.Model):
+    staff_id = models.CharField(max_length=100, primary_key=True)
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    email_address = models.EmailField(max_length=255, unique=True)
+    department = models.CharField(max_length=255)
+    role = models.CharField(max_length=255)
+    password = models.CharField(max_length=128)
+
+    def set_password(self, raw_password):
+        self.password = make_password(raw_password)
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name} - {self.role}"
+
+
 class Therapist(models.Model):
     first_name = models.CharField(max_length=255, blank=False, null=False)
     last_name = models.CharField(max_length=255, blank=False, null=False)

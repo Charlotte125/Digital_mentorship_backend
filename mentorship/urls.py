@@ -4,6 +4,7 @@ from .views import  PasswordResetAPIView
 from .views import PasswordResetRequestAPIView
 from . import views
 from django.urls import path
+from .views import UniversityStaffCreateAPIView
 from .views import RegistrationAPIView, RegistrationDetailAPIView, TherapistregistrationAPIView, RegistrationViewSet
 
 
@@ -18,6 +19,8 @@ urlpatterns = [
     path('api/register/therapist/', TherapistregistrationAPIView.as_view(), name='api_register_therapist'),  
     path('api/registrations/<int:student_id>/', RegistrationDetailAPIView.as_view(), name='registration-detail'),
     path('password-reset/', PasswordResetRequestAPIView.as_view(), name='password-reset'),
+     path('api/university-staff/', UniversityStaffCreateAPIView.as_view(), name='university_staff_create'),
+
    
 
    

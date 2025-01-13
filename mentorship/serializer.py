@@ -1,6 +1,8 @@
 from rest_framework import serializers
-from .models import Registration, Therapist, PasswordResetToken
+from .models import Registration, Therapist, PasswordResetToken 
 from django.contrib.auth.models import User
+from .models import UniversityStaff
+
 
 
 
@@ -39,3 +41,27 @@ class PasswordResetSerializer(serializers.Serializer):
         if data['new_password'] != data['confirm_password']:
             raise serializers.ValidationError({"confirm_password": "Passwords do not match."})
         return data
+
+
+
+class UniversityStaffSerializer(serializers.ModelSerializer):
+    confirm_password = serializers.CharField(write_only=True)
+
+    class Meta:
+        model = UniversityStaff
+        fields = ['staff_id', 'first_name', 'last_name', 'email_address', 'department', 'role', 'password', 'confirm_password']
+        extra_kwargs = {
+            'password': {'write_only': True}
+        }
+
+    def validate(self, data):
+        if data['password'] != data['confirm_password']:
+            raise serializers.ValidationError({"password": "Passwords do not match."})
+        return data
+
+    def create(self, validated_data):
+        validated_data.pop('confirm_password') 
+        staff = UniversityStaff(**validated_data)
+        staff.set_password(validated_data['password'])  
+        staff.save()
+        return staff       
