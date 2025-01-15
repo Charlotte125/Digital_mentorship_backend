@@ -7,6 +7,10 @@ from django.urls import path
 from .views.auth import UniversityStaffCreateAPIView
 from .views.auth import RegistrationAPIView, RegistrationDetailAPIView, TherapistregistrationAPIView, RegistrationViewSet
 from .views.chat import SendMessageView, CreateRoomView
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 
 router = DefaultRouter()
@@ -21,6 +25,11 @@ urlpatterns = [
     path('api/registrations/<int:student_id>/', RegistrationDetailAPIView.as_view(), name='registration-detail'),
     path('password-reset/', PasswordResetRequestAPIView.as_view(), name='password-reset'),
     path('api/university-staff/', UniversityStaffCreateAPIView.as_view(), name='university_staff_create'),
+   
+
+    #Authentication
+    path('api/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
     #chat url
 
