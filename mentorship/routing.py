@@ -1,6 +1,6 @@
 # routing.py
 from django.urls import path
-from .consumer import ChatConsumer
+from .chatConsumer import ChatConsumer
 from .testConsumer import TestConsumer
 websocket_urlpatterns = [
     # Remove the $ and make sure the trailing slash is consistent

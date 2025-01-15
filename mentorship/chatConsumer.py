@@ -5,8 +5,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
 
-        
-
         await self.accept()
 
     async def receive(self,text_data):
