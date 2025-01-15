@@ -2,17 +2,17 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import viewsets
-from .models import Registration
-from .serializer import RegistrationSerializer, RegistrationDetailSerializer  ,TherapistRegistartionSerializer
+from ..models import Registration
+from ..serializer import RegistrationSerializer, RegistrationDetailSerializer  ,TherapistRegistartionSerializer
 from django.contrib.auth.hashers import check_password
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication 
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth.models import User
-from .models import PasswordResetToken
+from ..models import PasswordResetToken
 from rest_framework.exceptions import ValidationError
-from .serializer import PasswordResetSerializer  
+from ..serializer import PasswordResetSerializer  
 import uuid
 from datetime import datetime
 import smtplib
@@ -29,9 +29,9 @@ from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.forms import PasswordChangeForm
-from .models import PasswordResetToken
-from .models import UniversityStaff
-from .serializer import UniversityStaffSerializer
+from ..models import PasswordResetToken
+from ..models import UniversityStaff
+from ..serializer import UniversityStaffSerializer
 
 
 
