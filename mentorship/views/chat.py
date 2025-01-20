@@ -3,6 +3,8 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from ..models import ChatRoom, Message
 from django.contrib.auth.models import User
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
 class ChatRoomView(APIView):
     permission_classes = [IsAuthenticated]
@@ -22,6 +24,18 @@ class SendMessageView(APIView):
         try:
             room = ChatRoom.objects.get(id=room_id)
             message = Message.objects.create(room=room, sender=request.user, content=content)
+
+            channel_layer = get_channel_layer()
+
+            room_group_name = f"chat_{room_id}"
+            async_to_sync (channel_layer.group_send)(
+            room_group_name,
+            {
+                'type': 'chat_message',
+                'message': message.content,
+                'sender': message.sender.username
+            }
+        )
             return Response({"success": True, "message": "Message sent."})
         except ChatRoom.DoesNotExist:
             return Response({"error": "Chat room not found."}, status=404)
