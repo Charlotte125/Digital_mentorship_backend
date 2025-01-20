@@ -48,13 +48,11 @@ class CreateRoomView(APIView):
         sender = request.user  
         receiver_username = request.data.get('receiver') 
 
-        # Validate the second user
         try:
             receiver = User.objects.get(username=receiver_username)
         except User.DoesNotExist:
             return Response({"error": "User does not exist."}, status=404)
 
-        # Ensure a room doesn't already exist between the two users
         room, created = ChatRoom.objects.get_or_create(
             user1=min(sender, receiver, key=lambda u: u.id), 
             user2=max(sender, receiver, key=lambda u: u.id)
