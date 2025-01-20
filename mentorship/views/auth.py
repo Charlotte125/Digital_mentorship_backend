@@ -33,7 +33,15 @@ from ..models import PasswordResetToken
 from ..models import UniversityStaff
 from ..serializer import UniversityStaffSerializer
 
-
+def get_user_count(request):
+    students_count = User.objects.filter(role='student').count()
+    staff_count = User.objects.filter(role='staff').count()
+    therapists_count = User.objects.filter(role='therapist').count()
+    return HttpResponse({
+        "students_count": students_count,
+        "staff_count": staff_count,
+        "therapists_count": therapists_count
+    })
 
 def send_reset_email(request):
     """Handle password reset request, generate token and send email."""
@@ -244,3 +252,85 @@ class UniversityStaffCreateAPIView(APIView):
 
 
 
+class UniversityStaffLoginView(APIView):
+    def post(self, request):
+        serializer = StaffLoginSerializer(data=request.data)
+        if serializer.is_valid():
+            email_address = serializer.validated_data['email_address']
+            password = serializer.validated_data['password']
+            
+            try:
+                
+                staff = UniversityStaff.objects.get(email_address=email_address)
+                
+             
+                if check_password(password, staff.password):
+                   
+                    return Response({
+                        "staff_id": staff.staff_id,
+                        "first_name": staff.first_name,
+                        "last_name": staff.last_name,
+                        "email_address": staff.email_address,
+                        "department": staff.department,
+                        "role": staff.role,
+                    }, status=status.HTTP_200_OK)
+                else:
+                    return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+            except UniversityStaff.DoesNotExist:
+                return Response({"error": "Staff member not found"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class MessageView(APIView):
+    def get(self, request):
+        
+        messages = Message.objects.values('first_name').annotate(message_count=Count('id')).order_by('-message_count')
+
+        
+        all_messages = Message.objects.all().order_by('-timestamp')
+        serializer = MessageSerializer(all_messages, many=True)
+
+        response_data = {
+            "message_counts": messages,
+            "messages": serializer.data
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
+    
+    def post(self, request):
+        data = request.data
+        try:
+            
+            new_message = Message.objects.create(
+                first_name=data['first_name'],
+                message=data['message']
+            )
+
+            
+            user_message_count = Message.objects.filter(first_name=data['first_name']).count()
+
+            return Response({
+                "message": "Message sent successfully",
+                "user_message_count": user_message_count  
+            }, status=status.HTTP_201_CREATED)
+
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class LoginView(APIView):
+    def post(self, request):
+        serializer = LoginSerializer(data=request.data)
+        if serializer.is_valid():
+            therapist = serializer.validated_data['therapist']
+            return Response({
+                "message": "Login successful.",
+                "therapist": {
+                    "id": therapist.id,
+                    "first_name": therapist.first_name,
+                    "last_name": therapist.last_name,
+                    "email_address": therapist.email_address,
+                }
+            }, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)            

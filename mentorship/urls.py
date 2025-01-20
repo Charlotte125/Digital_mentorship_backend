@@ -6,8 +6,8 @@ from .views.auth import send_reset_email, reset_password
 from django.urls import path
 from .views.auth import UniversityStaffCreateAPIView
 from .views.auth import RegistrationAPIView, RegistrationDetailAPIView, TherapistregistrationAPIView, RegistrationViewSet , UniversityStaffLoginView , MessageView 
-from .views import LoginView
-from .views import get_user_count
+from .views.auth import LoginView
+from .views.auth import get_user_count
 from .views.chat import SendMessageView, CreateRoomView
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
