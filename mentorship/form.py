@@ -4,7 +4,7 @@ from .models import ResetPassword
 from .models import Therapist
 from django.forms import TextInput
 from django import forms
-from .models import UniversityStaff
+from .models import UniversityStaff , Message
 
 
 
@@ -61,7 +61,7 @@ class TherapistForm(ModelForm):
         }
 
 
-        class UniversityStaffForm(forms.ModelForm):
+class UniversityStaffForm(forms.ModelForm):
     confirm_password = forms.CharField(widget=forms.PasswordInput, label="Confirm Password")
 
     class Meta:
@@ -80,6 +80,15 @@ class TherapistForm(ModelForm):
             raise forms.ValidationError("Passwords do not match")
 
         return cleaned_data
+
+
+
+
+class MessageForm(forms.ModelForm):
+    class Meta:
+        model = Message
+        fields = ['first_name', 'message']
+       
 
 
 

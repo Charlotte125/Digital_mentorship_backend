@@ -1,8 +1,8 @@
 from rest_framework import serializers
 from .models import Registration, Therapist, PasswordResetToken 
 from django.contrib.auth.models import User
-from .models import UniversityStaff
-
+from .models import UniversityStaff , Message
+from rest_framework import serializers
 
 
 
@@ -64,4 +64,40 @@ class UniversityStaffSerializer(serializers.ModelSerializer):
         staff = UniversityStaff(**validated_data)
         staff.set_password(validated_data['password'])  
         staff.save()
-        return staff       
+        return staff  
+
+
+
+
+class StaffLoginSerializer(serializers.Serializer):
+    email_address = serializers.CharField(max_length=100)
+    password = serializers.CharField(write_only=True)   
+
+
+
+class MessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Message
+        fields = ['id', 'first_name', 'message', 'timestamp']   
+
+
+
+class LoginSerializer(serializers.Serializer):
+    email_address = serializers.EmailField()
+    password = serializers.CharField(write_only=True)
+
+    def validate(self, data):
+        email_address = data.get('email_address')
+        password = data.get('password')
+
+        try:
+            therapist = Therapist.objects.get(email_address=email_address)
+        except Therapist.DoesNotExist:
+            raise serializers.ValidationError("Invalid email or password.")
+
+        if not therapist.check_password(password):
+            raise serializers.ValidationError("Invalid email or password.")
+
+        data['therapist'] = therapist
+        return data           
+
