@@ -31,9 +31,6 @@ urlpatterns = [
     path('api/messages/', MessageView.as_view(), name='messages_api'),
     path('api/login/', LoginView.as_view(), name='login'),
     path('api/userCount', get_user_count, name='user-count'),
-
-
-   
     path('api/university-staff/', UniversityStaffCreateAPIView.as_view(), name='university_staff_create'),
    
 
