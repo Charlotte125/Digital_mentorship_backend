@@ -9,6 +9,10 @@ from django.utils import timezone
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.models import AbstractUser
 
+
+
+
+
 class User(AbstractUser):
     
     
@@ -26,6 +30,7 @@ class User(AbstractUser):
         help_text='Specific permissions for this user.',
         verbose_name='user permissions',
     )
+    
 
 
 class Registration(models.Model):
@@ -35,6 +40,7 @@ class Registration(models.Model):
     email_address = models.EmailField(max_length=255)
     department = models.CharField(max_length=255)
     password = models.CharField(max_length=128)
+    is_active = models.BooleanField(default=True)
 
     def set_password(self, raw_password):
         self.password = make_password(raw_password)  

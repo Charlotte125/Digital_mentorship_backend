@@ -1,0 +1,120 @@
+[33mcommit 73654e01fbc49f2aca6715df52b203801f12cdb1[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mAlpha[m[33m)[m
+Author: iliza <charlotteliza22@gmail.com>
+Date:   Tue Jan 21 11:04:44 2025 -0800
+
+    add
+
+[33mcommit 6e591ea9ab6857f8eb54c32dd443c6faf2dd8855[m
+Author: iliza <charlotteliza22@gmail.com>
+Date:   Mon Jan 20 20:45:13 2025 -0800
+
+     branch
+
+[33mcommit 606d8172c3e411916333e1d9c0d900ae248a6265[m
+Author: iliza <charlotteliza22@gmail.com>
+Date:   Mon Jan 20 19:02:33 2025 -0800
+
+     pushing changes
+
+[33mcommit 1debfea0109a26f01345dd38419e3438eb9aed97[m
+Author: iliza <charlotteliza22@gmail.com>
+Date:   Mon Jan 20 19:01:42 2025 -0800
+
+     pushing changes
+
+[33mcommit e3a638269a900c53d0e521ca8dddc321d73f8bd2[m[33m ([m[1;32mmain[m[33m)[m
+Author: iliza <charlotteliza22@gmail.com>
+Date:   Sun Jan 12 16:10:23 2025 -0800
+
+    added new model
+
+[33mcommit 8d9af8e1a57e0e017961cd52354e5efe7515d2b4[m
+Author: iliza <charlotteliza22@gmail.com>
+Date:   Sun Jan 12 11:16:24 2025 -0800
+
+     added daphne
+
+[33mcommit 33113447a0cd8e113f8dbc35a7a975f438ec51f8[m
+Merge: 4045cf8d 47dec6ef
+Author: iliza <charlotteliza22@gmail.com>
+Date:   Tue Jan 7 19:44:31 2025 -0800
+
+    Merge branch 'ft-chat'
+
+[33mcommit 4045cf8d2c1f316e2bbf7925cccca26fe2a774a6[m
+Author: unknown <charlotteliza22@gmail.com>
+Date:   Mon Jan 6 22:23:44 2025 -0800
+
+     added emails
+
+[33mcommit 8d1e824fc7ebf689eded49970803b726ce337b33[m
+Author: unknown <charlotteliza22@gmail.com>
+Date:   Mon Jan 6 21:55:01 2025 -0800
+
+    ddd
+
+[33mcommit c37222bf8163c6cfb51d7685ecc4c068818b4a66[m
+Author: unknown <charlotteliza22@gmail.com>
+Date:   Mon Jan 6 18:42:08 2025 -0800
+
+     working on emails
+
+[33mcommit 47dec6ef4890779e8bd968f181204a4515685427[m[33m ([m[1;31morigin/ft-chat[m[33m, [m[1;32mft-chat[m[33m)[m
+Author: Karera-o <olivierkarera2020@gmail.com>
+Date:   Mon Jan 6 15:14:28 2025 +0200
+
+    (Consumer): Finishing Fixing issues in chat
+
+[33mcommit de095b5526ef3fd9d86a6f4fec5bef0f5a0512a4[m
+Author: Karera-o <olivierkarera2020@gmail.com>
+Date:   Mon Jan 6 11:44:27 2025 +0200
+
+    (TestConsumer): Finishing the critical part of django websocket
+
+[33mcommit 23bbced3ee30aa156622eddbb04be60dcc5ca33e[m
+Author: Karera-o <olivierkarera2020@gmail.com>
+Date:   Mon Jan 6 08:03:43 2025 +0200
+
+    wip
+
+[33mcommit 07955b5f9f273cb5a5b6407f463ee780342d318b[m
+Author: unknown <charlotteliza22@gmail.com>
+Date:   Mon Dec 30 10:00:47 2024 -0800
+
+     working on emails
+
+[33mcommit e71ed5182c75ccda222ec018da45f250903b9fb1[m
+Author: unknown <charlotteliza22@gmail.com>
+Date:   Tue Dec 24 17:30:16 2024 -0800
+
+     added some stuff
+
+[33mcommit 8fd59af81204036a6242203850e7967fbeb5fe79[m
+Author: unknown <charlotteliza22@gmail.com>
+Date:   Wed Dec 11 05:02:20 2024 -0800
+
+     added a venv
+
+[33mcommit 8ff5b17b3df0b656dc175b7e2957ca08483a8f81[m
+Author: Raissa13 <raissauwase13@gmail.com>
+Date:   Mon Nov 18 19:39:56 2024 +0200
+
+     started working on the chatting app
+
+[33mcommit 293b885681c3f1237fe12d2945e4b0c71c459bca[m
+Author: Raissa13 <raissauwase13@gmail.com>
+Date:   Thu Oct 17 21:18:32 2024 +0200
+
+     intergration with frontend
+
+[33mcommit b18cf9693f6c11795027fbd943229c760b459308[m
+Author: Raissa13 <raissauwase13@gmail.com>
+Date:   Tue Oct 15 14:38:32 2024 +0200
+
+     added new stuff
+
+[33mcommit 31ff7d473fd4eea39ec70d9b6da5328aece132ff[m
+Author: csr charlotte <148850852+Charlotte125@users.noreply.github.com>
+Date:   Tue Oct 15 09:18:35 2024 +0200
+
+    Initial commit

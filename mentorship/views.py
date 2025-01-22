@@ -35,6 +35,42 @@ from .serializer import UniversityStaffSerializer , StaffLoginSerializer , Messa
 from .models import Message
 from django.db.models import Count
 from .serializer import LoginSerializer
+from rest_framework.permissions import AllowAny
+from rest_framework import permissions
+from flask import Flask
+from datetime import datetime
+from flask import Blueprint, jsonify
+from .models import User 
+from django.http import JsonResponse
+from django.contrib.auth.models import Group, User
+
+from .models import Therapist, UniversityStaff, Registration
+
+def count_users(request):
+
+    therapists_count = Therapist.objects.count()
+
+    
+    university_staff_count = UniversityStaff.objects.count()
+
+    
+    students_count = Registration.objects.count()
+
+    
+    active_students_count = Registration.objects.filter(is_active=True).count()
+
+    total_users_count = therapists_count + university_staff_count + students_count
+
+    return JsonResponse({
+        'therapists': therapists_count,
+        'university_staff': university_staff_count,
+        'students': students_count,
+        'active_students': active_students_count,
+         'total_users': total_users_count,
+    })
+
+
+
 
 
 def get_user_count(request):
@@ -46,6 +82,22 @@ def get_user_count(request):
         "staff_count": staff_count,
         "therapists_count": therapists_count
     })
+
+
+
+class AuthorizedUsersView(APIView):
+    permission_classes = [permissions.IsAuthenticated] 
+
+    def get(self, request):
+        if request.user.role == 'university_staff':
+            users = UniversityStaff.objects.all() 
+        elif request.user.role == 'therapist':
+            users = Therapist.objects.all()
+        else:
+            return Response({"error": "Invalid user role."}, status=400)
+
+        serializer = UniversityStaffSerializer(users, many=True) 
+        return Response(serializer.data, status=200)    
 
 def send_reset_email(request):
     """Handle password reset request, generate token and send email."""

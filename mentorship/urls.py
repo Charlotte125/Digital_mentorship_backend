@@ -5,7 +5,7 @@ from .views import PasswordResetRequestAPIView
 from . import views
 from django.urls import path
 from .views import UniversityStaffCreateAPIView
-from .views import RegistrationAPIView, RegistrationDetailAPIView, TherapistregistrationAPIView, RegistrationViewSet , UniversityStaffLoginView , MessageView 
+from .views import RegistrationAPIView, RegistrationDetailAPIView, TherapistregistrationAPIView, RegistrationViewSet , UniversityStaffLoginView , MessageView , AuthorizedUsersView
 from .views import LoginView
 from .views import get_user_count
 
@@ -17,6 +17,7 @@ urlpatterns = [
     path('send-reset-email/', views.send_reset_email, name='send_reset_email'),
     path('reset-password/<uuid:token>/', views.reset_password, name='reset_password'),
     path('api/', include(router.urls)), 
+     path('count/users/', views.count_users, name='count_users'),
     path('api/register/', RegistrationAPIView.as_view(), name='api_register'),  
     path('api/register/therapist/', TherapistregistrationAPIView.as_view(), name='api_register_therapist'),  
     path('api/registrations/<int:student_id>/', RegistrationDetailAPIView.as_view(), name='registration-detail'),
@@ -26,6 +27,7 @@ urlpatterns = [
     path('api/messages/', MessageView.as_view(), name='messages_api'),
     path('api/login/', LoginView.as_view(), name='login'),
     path('api/userCount', get_user_count, name='user-count'),
+    path('api/users/', AuthorizedUsersView.as_view(), name='authorized-users'),
 
 
    
